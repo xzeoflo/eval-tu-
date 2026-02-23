@@ -1,3 +1,4 @@
+"""This module defines the API endpoints for managing items, including retrieving all items with pagination support."""
 from typing import List
 from sqlalchemy.orm import Session
 from fastapi import APIRouter,  Depends

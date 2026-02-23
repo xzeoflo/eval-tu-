@@ -1,7 +1,9 @@
+"""Tests unitaires avec mocks pour les fonctions d'actions et d'intégration avec PokeAPI."""
 import pytest
 from unittest.mock import MagicMock, patch
 from main import app
 from app import actions
+from app.utils.pokeapi import get_pokemon_name, battle_pokemon
 
 @patch("app.actions.add_trainer_pokemon")
 def test_mock_add_pokemon(mock_add):
@@ -23,3 +25,21 @@ def test_mock_get_items_empty(mock_items):
     mock_items.return_value = []
     result = actions.get_items(database=MagicMock())
     assert len(result) == 0
+
+@patch("app.utils.pokeapi.get_pokemon_data")
+def test_mock_get_pokemon_name(mock_data):
+    """ Test la récupération du nom via un mock de la donnée brute """
+    mock_data.return_value = {"name": "pikachu"}
+    assert get_pokemon_name(25) == "pikachu"
+
+@patch("app.utils.pokeapi.get_pokemon_stats")
+@patch("app.utils.pokeapi.get_pokemon_name")
+def test_mock_battle_pokemon_victory(mock_name, mock_stats):
+    """ Test le flux complet du combat simulé avec des mocks """
+    mock_name.side_effect = ["Pikachu", "Magicarpe"]
+    mock_stats.side_effect = [{"hp": 50}, {"hp": 10}]
+    
+    result = battle_pokemon(25, 129)
+    
+    assert result["winner"] == "Pikachu"
+    assert result["status"] == "victory"

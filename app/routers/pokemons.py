@@ -1,3 +1,4 @@
+"""This module defines the API endpoints for managing pokemons, including retrieving all pokemons with pagination support and fetching their stats from an external API."""
 from typing import List
 from sqlalchemy.orm import Session
 from fastapi import APIRouter,  Depends

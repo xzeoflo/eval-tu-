@@ -1,3 +1,4 @@
+"""This module defines the SQLAlchemy models for the application, representing the database tables and their relationships"""
 from sqlalchemy import Column, ForeignKey, Integer, String, Date
 from sqlalchemy.orm import relationship
 from .sqlite import Base

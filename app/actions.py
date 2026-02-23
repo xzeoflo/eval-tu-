@@ -1,3 +1,4 @@
+"""This module contains the core business logic of the application, including functions for creating and retrieving trainers, pokemons, and items from the database."""
 from sqlalchemy.orm import Session
 from . import models, schemas
 from .utils.pokeapi import get_pokemon_name

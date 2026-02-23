@@ -1,3 +1,5 @@
+"""This module sets up the SQLite database connection using SQLAlchemy, defines the base class for models,
+ and configures the session maker for database interactions."""
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
