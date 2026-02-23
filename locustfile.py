@@ -14,7 +14,10 @@ class QuickstartUser(HttpUser):
 
     @task(1)
     def post_new_trainer(self):
-        self.client.post("/trainers/", json={"name": "mehmoud", "birthdate": "2026-02-23"})
+        self.client.post("/trainers/", json={
+            "name": "mehmoud",
+            "birthdate": "2026-02-23"
+        })
 
     @task(3)
     def get_trainers_id(self):
@@ -22,4 +25,30 @@ class QuickstartUser(HttpUser):
     
     @task(2)
     def post_trainers_item(self):
-        self.client.post(f"/trainers/{self.trainer_id}/item/")
+        self.client.post(
+            f"/trainers/{self.trainer_id}/item/", 
+            json={
+                "name": "Item", 
+                "description": "Item test"
+            },
+            name="/trainers/{id}/item/"
+        )
+    
+    @task(2)
+    def post_trainers_pokemon(self):
+        self.client.post(
+            f"/trainers/{self.trainer_id}/pokemon/",
+            json={
+                "api_id": 25,
+                "custom_name": "Pokemon"
+            },
+            name="/trainers/{id}/pokemon/"
+        )
+
+    @task(3)
+    def get_items(self):
+        self.client.get("/items/")
+
+    @task(3)
+    def get_pokemons(self):
+        self.client.get("/pokemons/")
