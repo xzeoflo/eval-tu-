@@ -1,11 +1,25 @@
-from fastapi.testclient import TestClient
-from application.main import app, return_square
+import pytest
+from unittest.mock import MagicMock, patch
+from main import app
+from app import actions
 
-client = TestClient(app)
+@patch("app.actions.add_trainer_pokemon")
+def test_mock_add_pokemon(mock_add):
+    mock_add.return_value = {"id": 1, "name": "Pikachu", "trainer_id": 1}
+    result = actions.add_trainer_pokemon(database=MagicMock(), pokemon=MagicMock(), trainer_id=1)
+    assert result["name"] == "Pikachu"
+    mock_add.assert_called_once()
 
-def test_return_square_(mocker):
-    mocker.patch("application.main.get_square", return_value=25)
-    result = 50
-    response = client.get("/twice/5")
-    assert result == response.json()
-    assert response.status_code == 200
+@patch("app.utils.pokeapi.requests.get")
+def test_mock_external_pokeapi(mock_get):
+    mock_get.return_value.status_code = 200
+    mock_get.return_value.json.return_value = {"name": "bulbasaur", "weight": 69}
+    from app.utils.pokeapi import get_pokemon_name
+    name = get_pokemon_name(1)
+    assert name == "bulbasaur"
+
+@patch("app.actions.get_items")
+def test_mock_get_items_empty(mock_items):
+    mock_items.return_value = []
+    result = actions.get_items(database=MagicMock())
+    assert len(result) == 0
