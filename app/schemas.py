@@ -33,6 +33,7 @@ class Pokemon(PokemonBase):
     id: int
     name: str
     trainer_id: int
+    stats: Optional[dict] = None
 
     class Config:
         orm_mode = True
